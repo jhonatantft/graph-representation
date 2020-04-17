@@ -58,43 +58,68 @@
   <div class="container">
     <div class="row">
       <div class="" style="margin-top: 5%">
-        <h4>Create Graph using Adjacency Matrix/AB List</h4>
-        <div class="row">
-            <label class="two columns"><input type="radio" value="directed" name="graph-type" checked="checked"><span class="label-body">Directed</span></input></label>
-            <label class="two columns"><input type="radio" value="undirected" name="graph-type"><span class="label-body">Undirected</span></input></label>
+        <div class="app-title">
+          <h4>Criar grafo usando matriz de adjacência</h4>
         </div>
         <div class="row">
-            <label class="three columns"><input value="weighted" type="radio" name="edge-type" checked="checked"><span class="label-body">Weighted / Edge Labelled</span></input></label>
-            <label class="two columns"><input value="unweighted" type="radio" name="edge-type"><span class="label-body">Unweighted</span></input></label>
+            <label class="three columns"><input type="radio" value="directed" name="graph-type" checked="checked">
+              <span class="label-body">
+                Orientado</span>
+              </input>
+            </label>
+
+            <label class="two columns">
+              <input type="radio" value="undirected" name="graph-type">
+                <span class="label-body">
+                  Não orientado
+                </span>
+              </input>
+            </label>
         </div>
+        <div class="row">
+            <label class="three columns"><input value="weighted" type="radio" name="edge-type" checked="checked"><span class="label-body">Valorado</span></input></label>
+            <label class="two columns"><input value="unweighted" type="radio" name="edge-type"><span class="label-body">Não valorado</span></input></label>
+        </div>
+
+        <hr />
+
         <div class="row">
             <div class="three columns">
-                <label for="node-labels">Node Labels</label>
+                <label for="node-labels">Vértices</label>
                 <select class="u-full-width" id="label-format">
-                    <option value="numerals">1,2,3,...</option>
-                    <option value="alphabets">A,B,C,..</option>
-                    <option value="custom" selected>Custom Labels</option>
+                    <option value="custom" selected>
+                      Vértices customizados
+                    </option>
+                    <option value="numerals">
+                      Números
+                    </option>
+                    <option value="alphabets">
+                      Letras
+                    </option>
                 </select>
-                <textarea class="u-full-width" placeholder="One on each line" rows="12" id="node-labels" style="resize: none;height:auto;"></textarea>
+                <textarea class="u-full-width" placeholder="Um em cada linha" rows="6" id="node-labels" style="resize: none;height:auto;"></textarea>
             </div>
-            <div class="nine columns">
-                <label for="data">Graph Data</label>
+            <div class="four columns">
+                <label for="data">Conexões</label>
                 <select class="u-full-width" id="graph-data-format">
-                    <option value="adjmatrix">Adjacency Square Matrix: Comma separated square matrix, 0 means no edge</option>
-                    <option value="abw" selected>Node Node Weight: A B W means edge from A to B with label W (W is optional)</option>
+                    <option value="adjmatrix">Matriz Quadrada de Adjacência: Matriz quadrada separada por vírgula, 0 significa que não há arestas</option>
+                    <option value="abw" selected>Conexão de vértices</option>
                 </select>
-                <textarea class="u-full-width" placeholder="Comma separated square matrix, 0 means no edge" rows="12" id="graph-data" style="resize: none;height:auto;"></textarea>
+                <textarea class="u-full-width" placeholder="Comma separated square matrix, 0 means no edge" rows="6" id="graph-data" style="resize: none;height:auto;"></textarea>
             </div>
         </div>
+
+        <hr />
+
       </div>
     </div>
-    <button id="create-graph" class="u-full-width button-primary">Create / Refresh</button>
-    <span class="instruction" style="float:left" id="instructions">Hold down SHIFT + scroll to Zoom In / Zoom Out</span>
-    <span class="instruction" style="float:right">Hold down SHIFT + drag to Pan</span>
+    <button id="create-graph" class="u-full-width button-primary">Criar / Atualizar</button>
+    <span class="instruction" style="float:left" id="instructions">Segure SHIFT + scroll Zoom</span>
+    <span class="instruction" style="float:right">Segure SHIFT + drag para mover</span>
     <div class="row svgrow">
       <svg style="border: 1px black solid;" id="svg-space" class="u-full-width"></svg>
     </div>
-    <button id="save" class="u-full-width button-primary">Save this graph</button>
+    <button id="save" class="u-full-width button-primary">Salvar o grafo</button>
     <canvas id="saver-canvas" style="display: none;"></canvas>
   </div>
 

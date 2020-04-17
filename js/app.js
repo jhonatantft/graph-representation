@@ -1,24 +1,26 @@
 var NORMAL_EDGE = 0;
 var DIRECTED_BIEDGE = 1;
 var SELF_EDGE = 2;
-var example_labels = "Ahemdabad" + "\n" +
-    "Bombay" + "\n" +
-    "Calcutta" + "\n" +
-    "Delhi";
-var example_edges = "Ahemdabad Bombay 200" + "\n" +
-    "Bombay Calcutta 800" + "\n" +
-    "Calcutta Delhi 600" + "\n" +
-    "Delhi Delhi 0" + "\n" +
-    "Ahemdabad Calcutta 700";
 
-document.addEventListener('DOMContentLoaded', function() {
+var LABELEXMAPLES = 'Brasil' + '\n' +
+    'Japão' + '\n' +
+    'Alemanha' + '\n' +
+    'Chile';
+
+var EDGEEXAMPLES = 'Brasil Japão 100' + '\n' +
+    'Japão Alemanha 400' + '\n' +
+    'Alemanha Chile 600' + '\n' +
+    'Chile Chile 0' + '\n' +
+    'Brasil Alemanha 1000';
+
+document.addEventListener('DOMContentLoaded', function () {
     var gdataformatselect = document.getElementById("graph-data-format");
     var gdatatextarea = document.getElementById("graph-data");
     var labelformatselect = document.getElementById("label-format");
     var nodelabelstextarea = document.getElementById("node-labels");
     var canvas = document.getElementById("saver-canvas");
-    nodelabelstextarea.value = example_labels;
-    gdatatextarea.value = example_edges;
+    nodelabelstextarea.value = LABELEXMAPLES;
+    gdatatextarea.value = EDGEEXAMPLES;
 
     var weighted = true;
     var directed = true;
@@ -47,8 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
             nodelabelstextarea.value = alphas.join('\n');
         }
     }
-
-    init(parseInt(window.getComputedStyle(document.getElementById("create-graph")).width.split("px")[0]), window.innerHeight - 100);
+''
+    var windowWidth = parseInt(window.getComputedStyle(document.getElementById('create-graph')).width.split('px')[0]);
+    var windowHeight = window.innerHeight - 100;
+    init(windowWidth, windowHeight);
 
     document.getElementById("create-graph").onclick = function() {
         //parse data
@@ -244,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 }, false);
 
-function init(w, h) {
+function init (w, h) {
     var svgspace = document.getElementById("svg-space");
     if (svgspace) svgspace.remove();
     var svg = d3.select(".svgrow").append("svg")
@@ -316,7 +320,7 @@ function create_graph(dataset, linkDistance, repulsion_force, repulsion_force_ma
         .attr('fill-opacity', 0)
         .attr('stroke-opacity', 1)
         .attr('fill', 'blue')
-        .attr('stroke', 'black')
+        .attr('stroke', 'white')
         .attr('id', function(d, i) {
             return 'edgepath' + i
         })
@@ -335,7 +339,7 @@ function create_graph(dataset, linkDistance, repulsion_force, repulsion_force_ma
             .attr('dx', linkDistance / 2)
             .attr('dy', -5)
             .attr('font-size', 12)
-            .attr('stroke', 'black')
+            .attr('stroke', 'white')
             .attr('fill', 'black');
 
         edgelabels.append('textPath')
@@ -363,7 +367,7 @@ function create_graph(dataset, linkDistance, repulsion_force, repulsion_force_ma
             .append('svg:path')
             .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
             .attr('fill', 'black')
-            .attr('stroke', 'black');
+            .attr('stroke', 'white');
     }
 
     var nodes = g.append("g")
@@ -374,7 +378,7 @@ function create_graph(dataset, linkDistance, repulsion_force, repulsion_force_ma
         .append("circle")
         .attr("r", radius)
         .style("stroke", "black")
-        .style("fill", "yellow")
+        .style("fill", "#7289DA")
         .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
@@ -399,7 +403,7 @@ function create_graph(dataset, linkDistance, repulsion_force, repulsion_force_ma
             }
         })
         .attr("class", "nodelabel")
-        .attr("stroke", "black")
+        .attr("stroke", "white")
         .attr('font-size', 12)
         .text(function(d) {
             return d.name;
@@ -511,8 +515,8 @@ function scrollTo(element, to, duration) {
     }, 10);
 }
 
-function toLetters(num) {
-    "use strict";
+function toLetters (num) {
+    'use strict';
     var mod = num % 26,
         pow = num / 26 | 0,
         out = mod ? String.fromCharCode(64 + mod) : (--pow, 'Z');
