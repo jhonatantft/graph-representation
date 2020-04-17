@@ -9,5 +9,6 @@ app.on('ready', () => {
         }
     })
 
+    window.setMenuBarVisibility(false)
     window.loadFile('index.html')
 })
