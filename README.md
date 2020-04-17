@@ -7,7 +7,9 @@ Create directed/undirected , weighted/unweighted graphs (vertices and edges) and
 - Electron
     - `npm i -D electron`
     - On package.json/scripts write this:
-        - `"start": "electron .",`
+        ```json
+        "start": "electron ."
+        ```
 - electron-packager
     - `npm i -g electron-packager`
     - To compile the project type this command:
