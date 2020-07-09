@@ -1,12 +1,9 @@
-
 var donnees = {
     "nodes": [
-        { name: 'SP', fixed: true, x: 200, y: 100 },
-        { name: 'FLN', fixed: true, x: 500, y: 100 },
-        { name: 'CWB', fixed: true, x: 200, y: 300 },
-        { name: 'POA', fixed: true, x: 500, y: 300 }
-        // { name: 'S', fixed: true, x: 100, y: 200 },
-        // { name: 'T', fixed: true, x: 600, y: 200 }
+        { name: 'SP', fixed: true, x: 350, y: 75 },
+        { name: 'FLN', fixed: true, x: 570, y: 320 },
+        { name: 'CWB', fixed: true, x: 115, y: 135 },
+        { name: 'POA', fixed: true, x: 350, y: 335 }
     ],
     "links": [
         { "source": 'SP', "target": 'CWB', "flot": 0, "capacite": 9 },
@@ -14,18 +11,37 @@ var donnees = {
         { "source": 'SP', "target": 'POA', "flot": 0, "capacite": 7 },
         { "source": 'CWB', "target": 'FLN', "flot": 0, "capacite": 3 },
         { "source": 'CWB', "target": 'POA', "flot": 0, "capacite": 4 },
-        { "source": 'FLN', "target": 'POA', "flot": 0, "capacite": 10 },
-        // { "source": 'S', "target": 'C', "flot": 0, "capacite": 10 },
-        // { "source": 'S', "target": 'SP', "flot": 0, "capacite": 8 },
-        // { "source": 'SP', "target": 'B', "flot": 0, "capacite": 4 },
-        // { "source": 'SP', "target": 'D', "flot": 0, "capacite": 8 },
-        // { "source": 'SP', "target": 'C', "flot": 0, "capacite": 2 },
-        // { "source": 'C', "target": 'D', "flot": 0, "capacite": 9 },
-        // { "source": 'B', "target": 'T', "flot": 0, "capacite": 10 },
-        // { "source": 'D', "target": 'B', "flot": 0, "capacite": 6 },
-        // { "source": 'D', "target": 'T', "flot": 0, "capacite": 10 }
+        { "source": 'FLN', "target": 'POA', "flot": 0, "capacite": 10 }
     ]
 };
+
+// var data = {
+//     nodes: [
+//         { name: 's', fixed: 1, x: 24, y: 219, index: 0 },
+//         { name: 'f', fixed: 1, x: 488, y: 374, index: 1 },
+//         { name: 'g', fixed: 1, x: 455, y: 199, index: 2 },
+//         { name: 'h', fixed: 1, x: 446, y: 37, index: 3 },
+//         { name: 'j', fixed: 1, x: 212, y: 372, index: 4 },
+//         { name: 'k', fixed: 1, x: 219, y: 39, index: 5 },
+//         { name: 'l', fixed: 1, x: 218, y: 210, index: 6 },
+//         { name: 't', fixed: 1, x: 632, y: 206, index: 7}
+//     ],
+//     links: [
+//         { source: 's', target: 'l', flot: 0, capacite: "10" },
+//         { source: 's', target: 'k', flot: 0, capacite: "13" },
+//         { source: 'k', target: 'h', flot: 0, capacite: "24" },
+//         { source: 'h', target: 'g', flot: 0, capacite: "1" },
+//         { source: 'l', target: 'k', flot: 0, capacite: "5" },
+//         { source: 'l', target: 'f', flot: 0, capacite: "7" },
+//         { source: 'l', target: 'j', flot: 0, capacite: "15" },
+//         { source: 's', target: 'j', flot: 0, capacite: "10" },
+//         { source: 'j', target: 'f', flot: 0, capacite: "15" },
+//         { source: 'f', target: 't', flot: 0, capacite: "16" },
+//         { source: 'g', target: 'f', flot: 0, capacite: "6" },
+//         { source: 'g', target: 't', flot: 0, capacite: "13" },
+//         { source: 'h', target: 't', flot: 0, capacite: "9" }
+//     ]
+// };
 
 var indNodeConcerné = null;
 

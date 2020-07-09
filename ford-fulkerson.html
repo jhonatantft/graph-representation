@@ -83,8 +83,8 @@
                     </div>
                     <div class="panel-footer">
                         <div class="row">
-                            <div class="col-sm-8" style="border-right: 1px solid #222;">                         
-                                Manual:
+                            <div class="col-sm-12">                         
+                                Legenda:
                                 <ul>
                                     <li>
                                         Clique com o botão direito do mouse para criar um ponto ou calcular o fluxo
@@ -96,19 +96,12 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-sm-4">
-                                Crédits:
-                                <ul>
-                                    <li>Valisoa Randriatahirison</li>
-                                    <li>Lalamampionona Rakotonirainy</li>
-                                </ul>
-                            </div>
                         </div>
                         <div class="row">
                             <table class="table table-striped">
                                 <thead>
-                                    <th>Flot</th>
-                                    <th colspan="1000">Chemins</th>
+                                    <th>Fluxo</th>
+                                    <th colspan="1000">Caminhos</th>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="t in traitements">
@@ -130,7 +123,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true"></span></button>
-                        <h4 class="modal-title">Nouveau point</h4>
+                        <h4 class="modal-title">Novo ponto</h4>
                     </div>
                     <div class="modal-body">
                         <div class="grid">
@@ -139,7 +132,7 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <input type="text" ng-model="point.name" class="form-control"
-                                                placeholder="Point" />
+                                                placeholder="Nodo" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -197,7 +190,7 @@
                                             <input type="button"
                                                 ng-disabled="(source == null || target == null) || (source == target)"
                                                 style="width: 100%;margin-top: 10px;" class="btn btn-default"
-                                                value="Calculer" ng-click="calculerFlotMax()">
+                                                value="Calcular" ng-click="calculerFlotMax()">
                                         </div>
                                     </div>
                                 </div>
@@ -224,7 +217,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true"></span></button>
-                        <h4 class="modal-title">Création de lien</h4>
+                        <h4 class="modal-title">Criação de link</h4>
                     </div>
                     <div class="modal-body">
                         <div class="grid">
@@ -235,7 +228,7 @@
                                             <h1>{{ lien.source }}</h1>
                                         </div>
                                         <div class="col-xs-4" align="center">
-                                            <h3> vers </h3>
+                                            <h3> em direção </h3>
                                         </div>
                                         <div class="col-xs-4" align="center">
                                             <h1>{{ lien.target }}</h1>
@@ -243,7 +236,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12" align="center">
-                                            <label>Capacité de transport:
+                                            <label>Capacidade de transporte:
                                                 <input style="width: 100%!important;" type="text"
                                                     ng-model="lien.capacite" class="form-control"
                                                     placeholder="Capacité" />
