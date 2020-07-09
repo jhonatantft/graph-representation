@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html ng-app="flot-max">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ford-Fulkerson - Caminho Aumentante</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js" charset="utf-8"></script>
+    <script src="js/bootstrap.min.js" charset="utf-8"></script>
+    <script src="js/d3.min.js" charset="utf-8"></script>
+    <script src="js/angular.min.js" charset="utf-8"></script>
+
+    <script src="js/flot-max-app.js" charset="utf-8"></script>
+    <style>
+        .autoHide {
+            opacity: 0;
+            margin-left: 1em;
+            transition: .6s all;
+        }
+
+        .capacite:hover {
+            stroke: #99FF35;
+            fill: #99FF35;
+        }
+
+        tr:hover>td>.autoHide {
+            margin-left: 0;
+            opacity: 1;
+        }
+
+        text {
+            font-size: 14pt;
+        }
+
+        .point:hover {
+            cursor: move;
+        }
+
+        .point circle {
+            transition: .4s all;
+        }
+
+        .point:hover circle {
+            fill: red;
+            stroke: white;
+        }
+
+        .point:hover text {
+            stroke: white;
+            fill: white;
+        }
+
+        mark {
+            padding: .7em;
+            border-radius: 40px;
+        }
+
+        .abs {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+    </style>
+</head>
+
+<body style="background-color: #23272A;">
+    <br>
+
+    <div class="container" ng-controller="pointsAdd">
+        <div class="grid">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2> Ford-Fulkerson </h2>
+                    </div>
+                    <div class="panel-body" style="padding-top: 0 !important; padding-bottom: 0 !important;">
+                        <div class="row">
+                            <div class="col-sm-12" id="graphe" style="background-color: #2C2F33; border-left : 1px solid rgba(0,0,0, 0.6);">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-8" style="border-right: 1px solid #222;">                         
+                                Manual:
+                                <ul>
+                                    <li>
+                                        Clique com o botão direito do mouse para criar um ponto ou calcular o fluxo
+                                        máximo do gráfico
+                                    </li>
+                                    <li>
+                                        Clique com o botão direito do mouse em um ponto para o
+                                        exclua-o ou crie links a partir deste ponto
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-4">
+                                Crédits:
+                                <ul>
+                                    <li>Valisoa Randriatahirison</li>
+                                    <li>Lalamampionona Rakotonirainy</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>Flot</th>
+                                    <th colspan="1000">Chemins</th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="t in traitements">
+                                        <td align="center">{{ t.flot }}</td>
+                                        <td ng-repeat="c in t.chemin ">{{ donneesGraphe.nodes[c[0]].name }} <span
+                                                style="color: rgb(114, 137, 218);   ;">→</span> {{ donneesGraphe.nodes[c[1]].name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalcreationpoint" role="dialog">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true"></span></button>
+                        <h4 class="modal-title">Nouveau point</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="grid">
+                            <div class="row">
+                                <div class="col-sm-offset-3 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <input type="text" ng-model="point.name" class="form-control"
+                                                placeholder="Point" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-6" align="center">
+                                            <label>
+                                                X : {{ point.x }} px
+                                            </label>
+                                        </div>
+                                        <div class="col-xs-6" align="center">
+                                            <label>
+                                                Y : {{ point.y }} px
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" ng-disabled="!point.name"
+                            ng-click="creerPoint(point)">Criar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="modalCalculFlotMax" role="dialog">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true"></span></button>
+                        <h4 class="modal-title">Fluxo máximo</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="grid">
+                            <div class="row">
+                                <div class="col-sm-offset-2 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <label>Source :</label>
+                                            <select class="form-control" ng-model="source"
+                                                ng-options="noeud.name for noeud in donneesGraphe.nodes"></select>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <label>Destination :</label>
+                                            <select class="form-control" ng-model="target"
+                                                ng-options="noeud.name for noeud in donneesGraphe.nodes"></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <input type="button"
+                                                ng-disabled="(source == null || target == null) || (source == target)"
+                                                style="width: 100%;margin-top: 10px;" class="btn btn-default"
+                                                value="Calculer" ng-click="calculerFlotMax()">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 text-center">
+                                    <h4>Fluxo Máximo</h4>
+                                    <h1>{{ flotMax }}</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" ng-hide="!enModeCreation" ng-disabled="!point.name"
+                            ng-click="creerPoint(point)">Criar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="modalLien" role="dialog">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true"></span></button>
+                        <h4 class="modal-title">Création de lien</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="grid">
+                            <div class="row">
+                                <div class="col-sm-offset-3 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-xs-4" align="center">
+                                            <h1>{{ lien.source }}</h1>
+                                        </div>
+                                        <div class="col-xs-4" align="center">
+                                            <h3> vers </h3>
+                                        </div>
+                                        <div class="col-xs-4" align="center">
+                                            <h1>{{ lien.target }}</h1>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12" align="center">
+                                            <label>Capacité de transport:
+                                                <input style="width: 100%!important;" type="text"
+                                                    ng-model="lien.capacite" class="form-control"
+                                                    placeholder="Capacité" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12" align="center">
+                                            <button class="btn btn-success" ng-click="creerLien(lien)">Criar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" ng-hide="!enModeCreation" ng-disabled="!point.name"
+                            ng-click="creerPoint(point)">Criar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <ul class="nav nav-pills nav-stacked abs graphemenucontextuel">
+            <li><a href="javascript: void(0)" ng-click="showModalCreationPoint()">Novo ponto</a></li>
+            <li><a href="javascript: void(0)" ng-click="afficherCalculFlotMax()">Calcular</a></li>
+        </ul>
+
+        <ul class="nav nav-pills nav-stacked abs pointmenucontextuel">
+            <li><a href="javascript: void(0)" ng-click="lienApartir()">Link a partir deste ponto</a></li>
+            <li><a href="javascript: void(0)" ng-click="lienVers()">Link para este ponto</a></li>
+            <li><a href="javascript: void(0)" ng-click="supprPoint()">Excluir ponto</a></li>
+        </ul>
+        <a href="index.html">
+            <button id="goToIndex" class="u-full-width button-primary" style="width: 200px; color: #FFF; background-color: #7289DA; border-color: #7289DA;">
+                Voltar
+            </button>
+        </a>
+    </div>
+    <script src="js/graphe.js" charset="utf-8"></script>
+    <script src="js/flotmax.js"></script>
+</body>
+
+</html>

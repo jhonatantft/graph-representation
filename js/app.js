@@ -176,10 +176,17 @@ function loadApp () {
    * Define graph representation mode
    */
   function defineGraphMode () {
+    const welshPowell = document.getElementById('welsh-powell');
+    const aStar = document.getElementById('a-star');
+
     /**
      * Regular representation mode
      */
     document.getElementById('create-graph').onclick = () => {
+      const graphCanvas = document.querySelector('.normal-graph.hide');
+      if (document.querySelector('.normal-graph.hide')) {
+        graphCanvas.classList.remove('hide');
+      }
       graphMode = null;
       buildConnections();
     }
@@ -187,17 +194,55 @@ function loadApp () {
     /**
      * Welsh Powell mode
      */
-    document.getElementById('welsh-powell').onclick = () => {
-      graphMode = 'welsh-powell';
-      buildConnections();
+    if (welshPowell) {
+      welshPowell.onclick = () => {
+        graphMode = 'welsh-powell';
+        buildConnections();
+      }
     }
 
     /**
      * A* mode (pathfinder)
      */
-    document.getElementById('a-star').onclick = () => {
-      graphMode = 'a-star';
-      buildConnections();
+    if (aStar) {
+      aStar.onclick = () => {
+        graphMode = 'a-star';
+        buildConnections();
+      }
+    }
+
+    document.getElementById('ford-fulkerson').onclick = () => {
+      const graphCanvas = document.querySelector('.normal-graph');
+      const fordFulkersonCanvas = document.querySelector('.ford-fulkerson.hide');
+      if (graphCanvas) {
+        graphCanvas.classList.add('hide');
+      }
+      if (fordFulkersonCanvas) {
+        fordFulkersonCanvas.classList.remove('hide');
+      }
+
+      setTimeout(function () {
+        // Get HTML head element 
+        var head = document.getElementsByTagName('HEAD')[0];  
+        // Create new link Element 
+        var link = document.createElement('link'); 
+        // set the attributes for link element  
+        link.rel = 'stylesheet';  
+        link.type = 'text/css'; 
+        link.href = 'css/bootstrap.min.css';  
+        // Append link element to HTML head 
+        head.appendChild(link); 
+
+
+        var script = document.createElement('script');
+        script.src = 'js/d3.min.js';
+        document.head.appendChild(script); //or something of the likes
+        $("script[src='js/d3.v4.min.js']").remove()
+
+        var script2 = document.createElement('script');
+        script2.src = 'js/graphe.js';
+        document.head.appendChild(script2);
+      }, 1000);
     }
   }
 

@@ -1,0 +1,49 @@
+.autoHide{
+    opacity: 0;
+    margin-left: 1em;
+    transition: .6s all;
+}
+.capacite:hover{
+    stroke: #99FF35;
+    fill: #99FF35;
+}
+
+tr:hover > td > .autoHide{
+    margin-left: 0;
+    opacity: 1;
+}
+
+text{
+    font-size: 14pt;
+}
+.point:hover{
+    cursor: move;
+}
+
+.point circle{
+    transition: .4s all;
+}
+.point:hover circle{
+    fill: red;
+    stroke: white;
+}
+.point:hover text{
+    stroke: white;
+    fill: white;
+}
+
+mark{
+    padding: .7em;
+    border-radius: 40px;
+}
+
+.abs{
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+.hide {
+    display: none;
+}
