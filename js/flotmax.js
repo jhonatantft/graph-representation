@@ -3,17 +3,18 @@
 /*
  * s = source
  * t = destination
- * rGraph = matrice de la graphe
+ * rGraph = matrix of the graph
+
 */
 function bfs(rGraph, s, t, parent) {
 	var visited = [];
 	var pile = [];
 	var V = rGraph.length;
-	// Créer le matrice de visite pour les points
+	// Create the visit matrix for the points
 	for (var i = 0; i < V; i++) {
 		visited[i] = false;
 	}
-	// Creation de pile, empiler la source et la marquer comme visité
+	// Stack creation, stack the source and mark it as visited
 	pile.push(s);
 	visited[s] = true;
 	parent[s] = -1;
@@ -28,22 +29,22 @@ function bfs(rGraph, s, t, parent) {
 			}
 		}
 	}
-	//retourner true si il t est visité après avoir parcouru depuis s
+	// Return true if it is visited after browsing from s (source) 
 	return (visited[t] == true);
 }
 
-function fordFulkerson(graph, s, t) {
+function fordFulkerson (graph, s, t) {
   if (s < 0 || t < 0 || s > graph.length-1 || t > graph.length-1){
-    throw new Error("FlotMax - Ford-Fulkerson :: source ou destination invalide");
+    throw new Error("FlotMax - Ford-Fulkerson :: invalid source or destination");
   }
   if(graph.length === 0){
-    throw new Error("FlotMax - Ford-Fulkerson :: matrice invalide");
+    throw new Error("FlotMax - Ford-Fulkerson :: invalid matrix");
   }
 	var rGraph = [];
 	for (var u = 0; u < graph.length; u++) {
 		var temp = [];
     if(graph[u].length !== graph.length){
-      throw new Error("FlotMax - Ford-Fulkerson :: la matrice de graphe doit être carée");
+      throw new Error("FlotMax - Ford-Fulkerson :: the graph matrix must be square");
     }
 		for (v = 0; v < graph.length; v++) {
 			temp.push(graph[u][v]);
@@ -52,18 +53,18 @@ function fordFulkerson(graph, s, t) {
 	}
 	var parent = [];
 	var maxFlow = 0;
-	var traitements = [];
+	var treatments = [];
 	while (bfs(rGraph, s, t, parent)) {
 		var pathFlow = Number.MAX_VALUE;
-		var chemin = [];
+		var path = [];
 		for (var v = t; v != s; v = parent[v]) {
 			u = parent[v];
-			chemin.push([u,v]);
+			path.push([u,v]);
 			pathFlow = Math.min(pathFlow, rGraph[u][v]);
 		}
-		traitements.push({
+		treatments.push({
 			flot : pathFlow,
-			chemin: chemin.reverse()
+			path: path.reverse()
 		});
 
 		for (v = t; v != s; v = parent[v]) {
@@ -77,6 +78,6 @@ function fordFulkerson(graph, s, t) {
 	return {
 		"flotmax": maxFlow,
 		"grapheresiduel": rGraph,
-		"traitements": traitements
+		"treatments": treatments
 	};
 }

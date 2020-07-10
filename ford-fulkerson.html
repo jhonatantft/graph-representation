@@ -104,9 +104,9 @@
                                     <th colspan="1000">Caminhos</th>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="t in traitements">
+                                    <tr ng-repeat="t in treatments">
                                         <td align="center">{{ t.flot }}</td>
-                                        <td ng-repeat="c in t.chemin ">{{ donneesGraphe.nodes[c[0]].name }} <span
+                                        <td ng-repeat="c in t.path ">{{ donneesGraphe.nodes[c[0]].name }} <span
                                                 style="color: rgb(114, 137, 218);   ;">→</span> {{ donneesGraphe.nodes[c[1]].name }}</td>
                                     </tr>
                                 </tbody>
@@ -262,12 +262,12 @@
         </div>
 
 
-        <ul class="nav nav-pills nav-stacked abs graphemenucontextuel">
+        <ul class="nav nav-pills nav-stacked abs graphMenuContextual">
             <li><a href="javascript: void(0)" ng-click="showModalCreationPoint()">Novo ponto</a></li>
             <li><a href="javascript: void(0)" ng-click="afficherCalculFlotMax()">Calcular</a></li>
         </ul>
 
-        <ul class="nav nav-pills nav-stacked abs pointmenucontextuel">
+        <ul class="nav nav-pills nav-stacked abs pointMenuContextual">
             <li><a href="javascript: void(0)" ng-click="lienApartir()">Link a partir deste ponto</a></li>
             <li><a href="javascript: void(0)" ng-click="lienVers()">Link para este ponto</a></li>
             <li><a href="javascript: void(0)" ng-click="supprPoint()">Excluir ponto</a></li>

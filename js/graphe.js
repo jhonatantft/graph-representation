@@ -1,4 +1,4 @@
-var donnees = {
+const data = {
     "nodes": [
         { name: 'SP', fixed: true, x: 350, y: 75 },
         { name: 'FLN', fixed: true, x: 570, y: 320 },
@@ -43,29 +43,29 @@ var donnees = {
 //     ]
 // };
 
-var indNodeConcerné = null;
+let nodeConcerned = null;
 
-var pointmenucontextuel = d3.select(".pointmenucontextuel");
-var graphemenucontextuel = d3.select(".graphemenucontextuel");
-pointmenucontextuel.style("display", "none");
-graphemenucontextuel.style("display", "none");
+const pointMenuContextual = d3.select(".pointMenuContextual");
+const graphMenuContextual = d3.select(".graphMenuContextual");
+pointMenuContextual.style("display", "none");
+graphMenuContextual.style("display", "none");
 
 
-var graphe = d3.select("#graphe")
+const graphe = d3.select("#graphe")
     .append("svg")	// graphe = svg
     .on("click", function (d, i) {
-        pointmenucontextuel
+        pointMenuContextual
             .style("display", "none");
-        graphemenucontextuel
+        graphMenuContextual
             .style("display", "none");
         d3.event.preventDefault();
     })
     .on("contextmenu", function (d, i) {
-        var x = d3.event.pageX;
-        var y = d3.event.pageY;
-        var elementPointe = d3.event.target.nodeName;
-        if (elementPointe == "svg") {
-            graphemenucontextuel
+        let x = d3.event.pageX;
+        let y = d3.event.pageY;
+        let pointedElement = d3.event.target.nodeName;
+        if (pointedElement == "svg") {
+            graphMenuContextual
                 .style("left", x + "px")
                 .style("top", y + "px")
                 .style("display", "block");
@@ -86,7 +86,7 @@ graphe.append("g")
 graphe.attr("width", "100%")
     .attr("height", "400px");
 
-var defs = graphe.append("defs")
+let defs = graphe.append("defs")
     .append("marker")
     .attr("id", "fleche")
     .attr({
@@ -103,5 +103,5 @@ var defs = graphe.append("defs")
     .attr("class", "arrowHead");
 
 
-var force = d3.layout.force()
+let force = d3.layout.force()
     .size([750, 400]);

@@ -5,14 +5,14 @@ var mouseCoordinates = {
 };
 app
     .service("grapheProvider", function () {
-        this.traitements = [];
+        this.treatments = [];
 
         this.getGraphe = function () {
             /* 
              * data é uma variável compartilhada entre d3 e AngularJs ou app.js e graphe.js
              *
             */
-            return donnees;
+            return data;
         };
 
         this.update = function () {
@@ -20,11 +20,11 @@ app
             var g = this;
             //Reconstruction de données
             var arcs = [];
-            for (var i = 0; i < donnees.links.length; i++) {
-                var link = donnees.links[i];
-                var src = donnees.nodes.filter(function (node) {
+            for (var i = 0; i < data.links.length; i++) {
+                var link = data.links[i];
+                var src = data.nodes.filter(function (node) {
                     return link.source === node.name;
-                })[0], dest = donnees.nodes.filter(function (node) {
+                })[0], dest = data.nodes.filter(function (node) {
                     return link.target === node.name;
                 })[0];
                 arcs.push({
@@ -35,7 +35,7 @@ app
                 });
             }
             force
-                .nodes(donnees.nodes)
+                .nodes(data.nodes)
                 .links(arcs);
             var lineFunction = d3.svg.line()
                 .x(function (d) { return d.x; })
@@ -88,14 +88,14 @@ app
                 .on("click", function (d, i) {
                     var capacite = prompt("Capacité de transport : ", d.capacite);
                     capacite = (!capacite) ? d.capacite : (capacite == "" ? 0 : parseInt(capacite));
-                    donnees.links[i].capacite = capacite;
+                    data.links[i].capacite = capacite;
                     g.update();
                 });
             capacite.exit().remove();
 
             //////////////////////////////////////////////////////////////////
             var pt = graphe.select(".groupe-point").selectAll(".point")
-                .data(donnees.nodes);
+                .data(data.nodes);
             pt.select("text")
                 .text(function (d) {
                     return d.name;
@@ -107,8 +107,8 @@ app
                     var x = d3.event.pageX;
                     var y = d3.event.pageY;
 
-                    indNodeConcerné = i;
-                    pointmenucontextuel
+                    nodeConcerned = i;
+                    pointMenuContextual
                         .style("left", x + "px")
                         .style("top", y + "px")
                         .style("display", "block");
@@ -148,9 +148,9 @@ app
         };
 
         this.createPoint = function (point) {
-            donnees.nodes.push(point);
+            data.nodes.push(point);
             this.update();
-            return donnees;
+            return data;
         };
 
         this.convertirEnMatrice = function () {
@@ -182,30 +182,30 @@ app
                 var i = parseInt(lien.source.index),
                     j = parseInt(lien.target.index);
                 var flot = eval(lien.capacite - res.grapheresiduel[i][j]);
-                donnees.links[ind].flot = flot;
+                data.links[ind].flot = flot;
             }
-            this.traitements = res.traitements;
+            this.treatments = res.treatments;
             return res.flotmax;
         };
         this.getAllTraitements = function () {
-            return this.traitements;
+            return this.treatments;
         };
         this.getIndNodeConcerne = function () {
-            return indNodeConcerné;
+            return nodeConcerned;
         };
         this.getNodeConcerne = function () {
-            return donnees.nodes[indNodeConcerné];
+            return data.nodes[nodeConcerned];
         };
         this.supprimerNodeConcerne = function (indice) {
-            var pointSupprimé = donnees.nodes[indice];
-            var liensVaovao = donnees.links.filter(function (link) {
+            var pointSupprimé = data.nodes[indice];
+            var liensVaovao = data.links.filter(function (link) {
                 return !(link.source === pointSupprimé.name || link.target === pointSupprimé.name);
             });
-            donnees.links = liensVaovao;
-            donnees.nodes.splice(indice, 1);
+            data.links = liensVaovao;
+            data.nodes.splice(indice, 1);
         };
         this.creerLien = function (lien) {
-            donnees.links.push(lien);
+            data.links.push(lien);
         }
     })
     .service("sourisProvider", function () {
@@ -232,7 +232,7 @@ app.controller("pointsAdd", function ($scope, grapheProvider, sourisProvider) {
         y: 0
     };
 
-    $scope.traitements = [];
+    $scope.treatments = [];
 
     grapheProvider.update();
 
@@ -247,7 +247,7 @@ app.controller("pointsAdd", function ($scope, grapheProvider, sourisProvider) {
         setTimeout(function () {
             jQuery("input[type=text]", jQuery("#modalcreationpoint")).focus();
         }, 1000);
-        jQuery(".graphemenucontextuel").css("display", "none");
+        jQuery(".graphMenuContextual").css("display", "none");
     };
     $scope.creerPoint = function (point) {
         $scope.points = grapheProvider.createPoint(point);
@@ -266,31 +266,31 @@ app.controller("pointsAdd", function ($scope, grapheProvider, sourisProvider) {
     $scope.supprPoint = function () {
         grapheProvider.supprimerNodeConcerne(grapheProvider.getIndNodeConcerne());
         grapheProvider.update();
-        pointmenucontextuel.style("display", "none");
+        pointMenuContextual.style("display", "none");
     };
 
     $scope.afficherCalculFlotMax = function () {
         jQuery("#modalCalculFlotMax").modal("show");
-        jQuery(".graphemenucontextuel").css("display", "none");
+        jQuery(".graphMenuContextual").css("display", "none");
         $scope.donneesGraphe = grapheProvider.getGraphe();
     };
 
     $scope.calculerFlotMax = function () {
         $scope.flotMax = grapheProvider.calculerFlotMax($scope.source.index, $scope.target.index);
         grapheProvider.update();
-        jQuery(".graphemenucontextuel").css("display", "none");
-        $scope.traitements = grapheProvider.getAllTraitements();
+        jQuery(".graphMenuContextual").css("display", "none");
+        $scope.treatments = grapheProvider.getAllTraitements();
     };
 
     $scope.lienApartir = function () {
         $scope.pointLienApartir = grapheProvider.getNodeConcerne();
-        pointmenucontextuel.style("display", "none");
+        pointMenuContextual.style("display", "none");
     };
     $scope.lienVers = function () {
         $scope.pointLienVers = grapheProvider.getNodeConcerne();
         $scope.lien.source = $scope.pointLienApartir.name;
         $scope.lien.target = $scope.pointLienVers.name;
-        pointmenucontextuel.style("display", "none");
+        pointMenuContextual.style("display", "none");
         jQuery("#modalLien").modal("show");
     };
     $scope.creerLien = function (lien) {
