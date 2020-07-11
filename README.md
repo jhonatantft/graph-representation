@@ -3,7 +3,7 @@
 Create directed/undirected , weighted/unweighted graphs (vertices and edges) and save them to png!
 
 ## Installation
-- Node
+- Node >= 10.12.0
 - Electron
     - `npm i -D electron`
     - On package.json/scripts write this:

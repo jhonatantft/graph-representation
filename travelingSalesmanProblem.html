@@ -42,6 +42,7 @@
                             <option value="150">150</option>
                             <option value="200">200</option>
                             <option value="250">250</option>
+                            <option value="1000">1000</option>
                         </select>
                     </p>
                     <p class="optionParagraph">
@@ -52,7 +53,7 @@
                         <label>Tamanho da população: </label>
                         <input class="option" id="popSize" type="number" name="quantity" min="100" max="1000" step="10" value="100">
                     </p>
-                    <p class="optionParagraph">
+                    <p class="optionParagraph hide">
                         <label>Convergência: </label>
                         <input class="option" id="converge" type="number" name="quantity" min="1000" max="10000" step="10" value="2000">
                     </p>
@@ -68,24 +69,12 @@
                         <label>Operador de cruzamento: </label>
                         <select class="operator" id="crossoverOperator">
                             <option value="CX">Cycle (CX)</option>
-                            <!--<option value="OX">Order (OX)</option>-->
-                            <!--<option value="APX">Alternating-position (APX)</option>-->
-                            <!--<option value="UXO">Universal XO</option>-->
-                            <!--<option value="test">Test</option>-->
                         </select>
                     </p>
                     <p class="optionParagraph hide">
                         <label>Operador de mutação: </label>
                         <select class="operator" id="mutationOperator">
-                            <option value="TWORS">TWORS</option>
-                            <!--<option value="TWORS2">TWORS2</option>-->
-                            <!--<option value="TWORS3">TWORS3</option>-->
-                            <option value="CIM">CIM (Centre Inverse Mutation)</option>
-                            <!--<option value="CIM2">CIM2 (Centre Inverse Mutation)</option>-->
-                            <option value="RSM">RSM (Reverse Sequence Mutation)</option>
-                            <option value="CTWORS">CTWORS</option>
-                            <option value="CCIM">CCIM (Calculated Centre Inverse Mutation)</option>
-                            <option value="CRSM">CRSM (Calculated Reverse Sequence Mutation)</option>
+                            <option value="DEFAULT">DEFAULT</option>
                         </select>
                     </p>
                     <p class="optionParagraph">
@@ -109,6 +98,7 @@
                         <label>Melhor distância: </label>
                         <input class="value" id="bestDistance" type="number" readonly>
                     </p>
+                    <!-- 
                     <p class="optionParagraph">
                         <label>Pior distância: </label>
                         <input class="value" id="worstDistance" type="number" readonly>
@@ -116,30 +106,21 @@
                     <p class="optionParagraph">
                         <label>Distância média: </label>
                         <input class="value" id="meanDistance" type="number" readonly>
-                    </p>
+                    </p> -->
                     <p class="optionParagraph">
                         <input class="button-primary" type="button" id="evolve" value="Evoluir">
                         <input class="button-primary" type="button" id="finish" value="Terminar">
                     </p>
                 </fieldset>
             </form>
-<!--
-	    <form class="statsForm" id="reportForm">
-                <fieldset>
-                    <legend>Report settings:</legend>
-                    <p class="optionParagraph">
-                        <label>Test (x) times: </label>
-                        <input class="value" id="reportCount" type="number">
-                    </p>
-                    <p class="optionParagraph">
-                        <input type="button" id="report" value="Report">
-                    </p>
-                </fieldset>
-            </form> 
--->
         </div>
-
-        <script type="text/javascript" >
+        <a href="index.html">
+            <button class="u-full-width button-primary">Home</button>
+        </a>
+        <a href="ford-fulkerson.html">
+            <button id="ford-fulkerson" class="u-full-width button-primary">Ford-Fulkerson</button>
+        </a>
+    <script type="text/javascript" >
             var tspCanvas = document.getElementById("tspCanvas");
             var tspContext = tspCanvas.getContext("2d");
             var tspFlags = {};
@@ -147,47 +128,21 @@
             var tspReport = {};
 
             tspReport.report = [];
-            tspReport.mutationOperator = ["TWORS","TWORS1","TWORS2","CIM","CIM1","RSM"];
+            tspReport.mutationOperator = ["DEFAULT"];
             drawNoteLines();
 
-
-            $( document ).ready(function() {
-                $("#initialize").on("click", function(){
+            $( document ).ready(function () {
+                $("#initialize").on("click", function (){
                     initialize();
                 });
-                $("#reset").on("click", function(){
+                $("#reset").on("click", function (){
                     reset();
                 });
-                $("#evolve").on("click", function(){
+                $("#evolve").on("click", function (){
                     evolve();
                 });
-                $("#finish").on("click", function(){
+                $("#finish").on("click", function (){
                     tspFlags.finishClicked = 1;
-                });
-                $("#report").on("click", function(){
-                    tspReport.reportCount = $("#reportCount").val();
-                    for(var i=0; i<tspReport.reportCount; i++){
-                        $("#mutationOperator").val(tspReport.mutationOperator[0]);
-                        initialize();
-                        tspPopulation.mutationOperator = tspReport.mutationOperator[0];
-                        tspReport.report[0] = evolve();
-                        var j = 0;
-                        tspReport.reportInterval = setInterval(function(){
-                            if(tspFlags.evolutionFinished) {
-                                j++;
-                                $("#mutationOperator").val(tspReport.mutationOperator[j]);
-                                reset();
-                                tspPopulation.mutationOperator = tspReport.mutationOperator[j];
-                                tspReport.report[j] = evolve();
-                                tspFlags.evolutionFinished = 0;
-                            }
-                            if(j == tspReport.mutationOperator.length){
-                                clearInterval(tspReport.reportInterval);
-                            }
-                        },10);
-
-                    }
-                console.log(tspReport.report);
                 });
             });
         </script>

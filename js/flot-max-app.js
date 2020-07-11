@@ -8,17 +8,12 @@ app
         this.treatments = [];
 
         this.getGraphe = function () {
-            /* 
-             * data é uma variável compartilhada entre d3 e AngularJs ou app.js e graphe.js
-             *
-            */
             return data;
         };
 
         this.update = function () {
-            //g = variable de sauvegarde de grapheprovider
             var g = this;
-            //Reconstruction de données
+            // Data reconstruction
             var arcs = [];
             for (var i = 0; i < data.links.length; i++) {
                 var link = data.links[i];
@@ -44,11 +39,9 @@ app
 
             var link = graphe.select(".groupe-path").selectAll(".link")
                 .data(force.links())
-                /// Mise à jour des liens
                 .attr("stroke", function (d) {
                     return (d.flot == d.capacite) ? "red" : "white";
                 });
-            ///Création de nouveaux liens
             link.enter().append("path")
                 .attr("id", function (d, i) {
                     return "path" + i;
@@ -58,7 +51,6 @@ app
                     return (d.flot == d.capacite) ? "red" : "white";
                 })
                 .attr("marker-end", "url(#fleche)");
-            //Suppression des liens inutiles
             link.exit().remove();
             var capacite = graphe.select(".groupe-capacite").selectAll(".capacite")
                 .data(force.links())
@@ -93,7 +85,6 @@ app
                 });
             capacite.exit().remove();
 
-            //////////////////////////////////////////////////////////////////
             var pt = graphe.select(".groupe-point").selectAll(".point")
                 .data(data.nodes);
             pt.select("text")
@@ -155,7 +146,6 @@ app
 
         this.convertirEnMatrice = function () {
             var matrice = [];
-            //Création matrice carée
             for (var i = 0; i < force.nodes().length; i++) {
                 var colzero = [];
                 for (var j = 0; j < force.nodes().length; j++) {
@@ -163,7 +153,6 @@ app
                 }
                 matrice.push(colzero);
             }
-            //Remplissage des liens entre les noeuds dans le matrice
             for (var ind = 0, links = force.links(); ind < links.length; ind++) {
                 var lien = links[ind];
                 var i = parseInt(lien.source.index),
@@ -176,7 +165,7 @@ app
         };
         this.calculerFlotMax = function (source, target) {
             var matrice = this.convertirEnMatrice();
-            var res = fordFulkerson(matrice, source, target); //definit dans scripts/flomax.js
+            var res = fordFulkerson(matrice, source, target);
             for (var ind = 0, links = force.links(); ind < links.length; ind++) {
                 var lien = links[ind];
                 var i = parseInt(lien.source.index),

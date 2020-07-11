@@ -6,7 +6,8 @@
  * rGraph = matrix of the graph
 
 */
-function bfs(rGraph, s, t, parent) {
+
+function checkEachNode (rGraph, s, t, parent) {
 	var visited = [];
 	var pile = [];
 	var V = rGraph.length;
@@ -34,18 +35,20 @@ function bfs(rGraph, s, t, parent) {
 }
 
 function fordFulkerson (graph, s, t) {
-  if (s < 0 || t < 0 || s > graph.length-1 || t > graph.length-1){
-    throw new Error("FlotMax - Ford-Fulkerson :: invalid source or destination");
-  }
-  if(graph.length === 0){
-    throw new Error("FlotMax - Ford-Fulkerson :: invalid matrix");
-  }
+	if (s < 0 || t < 0 || s > graph.length - 1 || t > graph.length - 1) {
+		throw new Error("FlotMax - Ford-Fulkerson :: invalid source or destination");
+	}
+
+	if (graph.length === 0) {
+		throw new Error("FlotMax - Ford-Fulkerson :: invalid matrix");
+	}
+
 	var rGraph = [];
 	for (var u = 0; u < graph.length; u++) {
 		var temp = [];
-    if(graph[u].length !== graph.length){
-      throw new Error("FlotMax - Ford-Fulkerson :: the graph matrix must be square");
-    }
+		if (graph[u].length !== graph.length){
+		throw new Error("FlotMax - Ford-Fulkerson :: the graph matrix must be square");
+		}
 		for (v = 0; v < graph.length; v++) {
 			temp.push(graph[u][v]);
 		}
@@ -54,7 +57,8 @@ function fordFulkerson (graph, s, t) {
 	var parent = [];
 	var maxFlow = 0;
 	var treatments = [];
-	while (bfs(rGraph, s, t, parent)) {
+
+	while (checkEachNode(rGraph, s, t, parent)) {
 		var pathFlow = Number.MAX_VALUE;
 		var path = [];
 		for (var v = t; v != s; v = parent[v]) {
@@ -68,7 +72,7 @@ function fordFulkerson (graph, s, t) {
 		});
 
 		for (v = t; v != s; v = parent[v]) {
-			u = parent[v];
+			u = parent[v]; // sp
 			rGraph[u][v] -= pathFlow;
 			rGraph[v][u] += pathFlow;
 		}

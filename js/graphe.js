@@ -50,7 +50,6 @@ const graphMenuContextual = d3.select(".graphMenuContextual");
 pointMenuContextual.style("display", "none");
 graphMenuContextual.style("display", "none");
 
-
 const graphe = d3.select("#graphe")
     .append("svg")	// graphe = svg
     .on("click", function (d, i) {
